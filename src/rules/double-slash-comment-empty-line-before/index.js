@@ -57,7 +57,8 @@ export default function(expectation, options, context) {
 
       // Optionally ignore stylelint commands
       if (
-        comment.text.indexOf(stylelintCommandPrefix) === 0 &&
+        comment.text &&
+        comment.text.startsWith(stylelintCommandPrefix) &&
         optionsHaveIgnored(options, "stylelint-commands")
       ) {
         return;

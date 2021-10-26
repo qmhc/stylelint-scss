@@ -12,7 +12,7 @@ export default function(selector) {
   // SCSS placeholder selectors
   if (
     !standardSyntaxSelector &&
-    selector.indexOf("%") === 0 &&
+    selector.startsWith("%") &&
     !hasInterpolation(selector)
   ) {
     return true;
