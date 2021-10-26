@@ -1,4 +1,4 @@
-import { isRegExp, isString } from "lodash";
+import { isRegExp, isString } from "stylelint/lib/utils/validateTypes";
 import resolveNestedSelector from "postcss-resolve-nested-selector";
 import { utils } from "stylelint";
 import {

@@ -1,6 +1,6 @@
 import { utils } from "stylelint";
 import optionsMatches from "stylelint/lib/utils/optionsMatches";
-import { isString, isRegExp } from "lodash";
+import { isString, isRegExp } from "stylelint/lib/utils/validateTypes";
 import {
   namespace,
   parseSelector,

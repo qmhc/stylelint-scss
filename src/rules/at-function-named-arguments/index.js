@@ -1,4 +1,4 @@
-import { isString } from "lodash";
+import { isString } from "stylelint/lib/utils/validateTypes";
 import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import {

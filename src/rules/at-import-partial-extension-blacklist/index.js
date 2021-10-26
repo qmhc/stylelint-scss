@@ -1,4 +1,4 @@
-import { isRegExp, isString } from "lodash";
+import { isRegExp, isString } from "stylelint/lib/utils/validateTypes";
 import { utils } from "stylelint";
 import { namespace } from "../../utils";
 import nodeJsPath from "path";
