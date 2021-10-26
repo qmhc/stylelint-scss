@@ -22,7 +22,6 @@
     "babel-plugin-istanbul": "^6.1.1",
     "babel-preset-jest": "^27.2.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-lodash": "^7.3.0",
     "github-contributors-list": "^1.2.5",
     "husky": "^4.3.8",
     "jest": "^27.3.1",
@@ -53,9 +52,6 @@
       "jest": true,
       "node": true
     },
-    "plugins": [
-      "lodash"
-    ],
     "globals": {
       "testRule": true
     },
@@ -73,15 +69,7 @@
       "no-var": "error",
       "object-shorthand": "error",
       "prefer-const": "error",
-      "template-curly-spacing": "error",
-      "lodash/callback-binding": "error",
-      "lodash/collection-method-value": "error",
-      "lodash/collection-return": "error",
-      "lodash/no-double-unwrap": "error",
-      "lodash/no-extra-args": "error",
-      "lodash/no-unbound-this": "error",
-      "lodash/unwrap": "error",
-      "lodash/preferred-alias": "error"
+      "template-curly-spacing": "error"
     }
   },
   "files": [
