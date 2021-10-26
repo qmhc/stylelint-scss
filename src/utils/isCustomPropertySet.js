@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import get from "lodash.get";
 
 /**
  * Check whether a Node is a custom property set

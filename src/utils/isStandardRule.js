@@ -1,4 +1,4 @@
-import { get } from "lodash";
+import get from "lodash.get";
 import isCustomPropertySet from "./isCustomPropertySet";
 import isStandardSyntaxSelector from "./isStandardSelector";
 
