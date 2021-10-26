@@ -3,11 +3,6 @@
   "description": "A collection of SCSS specific rules for Stylelint",
   "version": "4.0.0",
   "author": "Krister Kari",
-  "babel": {
-    "presets": [
-      "@babel/env"
-    ]
-  },
   "dependencies": {
     "lodash": "^4.17.21",
     "postcss-media-query-parser": "^0.2.3",
@@ -39,6 +34,18 @@
   },
   "peerDependencies": {
     "stylelint": "^14.0.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "loose": true,
+          "bugfixes": true,
+          "targets": "node >= 8"
+        }
+      ]
+    ]
   },
   "eslintConfig": {
     "extends": [
