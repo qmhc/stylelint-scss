@@ -32,11 +32,10 @@ export default function(value, _, context) {
       }
 
       if (context.fix) {
-        if (value === "always") {
-          mixinCall.params = `${mixinCall.params} ()`;
-        } else {
-          mixinCall.params = mixinCall.params.replace(/\s*\([\s\S]*?\)$/, "");
-        }
+        mixinCall.params =
+          value === "always"
+            ? `${mixinCall.params} ()`
+            : mixinCall.params.replace(/\s*\([\s\S]*?\)$/, "");
 
         return;
       }

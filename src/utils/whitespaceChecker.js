@@ -179,7 +179,7 @@ export default function(targetWhitespace, expectation, messages) {
   }
 
   function beforeAllowingIndentation(obj) {
-    before(Object.assign({}, obj, { allowIndentation: true }));
+    before({ ...obj, allowIndentation: true });
   }
 
   function expectBefore(messageFunc = messages.expectedBefore) {
@@ -199,24 +199,30 @@ export default function(targetWhitespace, expectation, messages) {
 
     if (targetWhitespace === "newline") {
       // If index is preceeded by a Windows CR-LF ...
-      if (oneCharBefore === "\n" && twoCharsBefore === "\r") {
-        if (activeArgs.onlyOneChar || !isWhitespace(source[index - 3])) {
-          return;
-        }
+      if (
+        oneCharBefore === "\n" &&
+        twoCharsBefore === "\r" &&
+        (activeArgs.onlyOneChar || !isWhitespace(source[index - 3]))
+      ) {
+        return;
       }
 
       // If index is followed by a Unix LF ...
-      if (oneCharBefore === "\n" && twoCharsBefore !== "\r") {
-        if (activeArgs.onlyOneChar || !isWhitespace(twoCharsBefore)) {
-          return;
-        }
+      if (
+        oneCharBefore === "\n" &&
+        twoCharsBefore !== "\r" &&
+        (activeArgs.onlyOneChar || !isWhitespace(twoCharsBefore))
+      ) {
+        return;
       }
     }
 
-    if (targetWhitespace === "space" && oneCharBefore === " ") {
-      if (activeArgs.onlyOneChar || !isWhitespace(twoCharsBefore)) {
-        return;
-      }
+    if (
+      targetWhitespace === "space" &&
+      oneCharBefore === " " &&
+      (activeArgs.onlyOneChar || !isWhitespace(twoCharsBefore))
+    ) {
+      return;
     }
 
     activeArgs.err(
@@ -265,7 +271,7 @@ export default function(targetWhitespace, expectation, messages) {
   }
 
   function afterOneOnly(obj) {
-    after(Object.assign({}, obj, { onlyOneChar: true }));
+    after({ ...obj, onlyOneChar: true });
   }
 
   function expectAfter(messageFunc = messages.expectedAfter) {
@@ -290,21 +296,22 @@ export default function(targetWhitespace, expectation, messages) {
       }
 
       // If index is followed by a Unix LF ...
-      if (oneCharAfter === "\n") {
-        if (activeArgs.onlyOneChar || !isWhitespace(twoCharsAfter)) {
-          return;
-        }
-      }
-    }
-
-    if (targetWhitespace === "space" && oneCharAfter === " ") {
       if (
-        expectation === "at-least-one-space" ||
-        activeArgs.onlyOneChar ||
-        !isWhitespace(twoCharsAfter)
+        oneCharAfter === "\n" &&
+        (activeArgs.onlyOneChar || !isWhitespace(twoCharsAfter))
       ) {
         return;
       }
+    }
+
+    if (
+      targetWhitespace === "space" &&
+      oneCharAfter === " " &&
+      (expectation === "at-least-one-space" ||
+        activeArgs.onlyOneChar ||
+        !isWhitespace(twoCharsAfter))
+    ) {
+      return;
     }
 
     activeArgs.err(

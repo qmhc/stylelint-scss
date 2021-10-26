@@ -99,13 +99,12 @@ export default function rule(primary) {
         }
 
         const unit = matchUnit[1];
-        const offset = decl.value.indexOf(unit);
 
         utils.report({
           ruleName,
           result,
           message: messages.rejected(unit),
-          index: declarationValueIndex(decl) + offset,
+          index: declarationValueIndex(decl) + decl.value.indexOf(unit),
           node: decl
         });
       });
@@ -119,17 +118,17 @@ function isInterpolated(value) {
   // ValueParser breaks up interpolation with math into multiple, fragmented
   // segments (#{$value, +, 2}px). The easiest way to detect this is to look for a fragmented
   // interpolated section.
-  if (value.match(/^#{\$[a-z]*$/)) {
+  if (/^#{\$[a-z]*$/.test(value)) {
     return true;
   }
 
-  units.forEach(unit => {
+  for (const unit of units) {
     const regex = new RegExp(`^#{[$a-z_0-9 +-]*}${unit};?$`);
 
-    if (value.match(regex)) {
+    if (regex.test(value)) {
       boolean = true;
     }
-  });
+  }
 
   return boolean;
 }

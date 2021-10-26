@@ -54,7 +54,7 @@ export default function(expectation, options, context) {
       );
     };
 
-    const hasNewline = str => str.indexOf(context.newline) > -1;
+    const hasNewline = str => str.includes(context.newline);
     const isDollarVar = node => node.prop && node.prop[0] === "$";
 
     root.walkDecls(decl => {
@@ -180,7 +180,9 @@ export default function(expectation, options, context) {
             }
 
             return;
-          } else if (
+          }
+
+          if (
             (expectEmptyLineAfter &&
               exceptBeforeComment &&
               nextIsComment &&
@@ -195,7 +197,9 @@ export default function(expectation, options, context) {
             fixNext(next, context.newline + context.newline, context.newline);
 
             return;
-          } else if (
+          }
+
+          if (
             (!expectEmptyLineAfter &&
               exceptBeforeComment &&
               nextIsComment &&
@@ -220,7 +224,9 @@ export default function(expectation, options, context) {
             fixParent(decl, context.newline, context.newline + context.newline);
 
             return;
-          } else if (!expectEmptyLineAfter && hasEmptyLineAfter) {
+          }
+
+          if (!expectEmptyLineAfter && hasEmptyLineAfter) {
             fixParent(decl, "\\n\\r\\n", "\r\n");
             fixParent(decl, context.newline + context.newline, context.newline);
 

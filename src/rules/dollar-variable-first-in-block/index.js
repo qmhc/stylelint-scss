@@ -50,9 +50,9 @@ export default function(primary, options) {
 
       // If selected, ignore declarations in different types of at-rules.
       // ----------------------------------------------------------------
-      if (decl.parent.type === "atrule") {
-        if (
-          optionsHaveException(options, "at-rule") ||
+      if (
+        decl.parent.type === "atrule" &&
+        (optionsHaveException(options, "at-rule") ||
           (optionsHaveException(options, "function") &&
             decl.parent.name === "function") ||
           (optionsHaveException(options, "mixin") &&
@@ -62,10 +62,9 @@ export default function(primary, options) {
           (optionsHaveException(options, "loops") &&
             (decl.parent.name === "each" ||
               decl.parent.name === "for" ||
-              decl.parent.name === "while"))
-        ) {
-          return;
-        }
+              decl.parent.name === "while")))
+      ) {
+        return;
       }
 
       const previous = decl.prev();
@@ -81,7 +80,7 @@ export default function(primary, options) {
       let precededOnlyByAllowed = true;
       const allowComments = optionsHaveIgnored(options, "comments");
       const allowImports = optionsHaveIgnored(options, "imports");
-      const importAtRules = ["import", "use", "forward"];
+      const importAtRules = new Set(["import", "use", "forward"]);
 
       for (const sibling of decl.parent.nodes) {
         if (sibling === decl) {
@@ -92,7 +91,7 @@ export default function(primary, options) {
             (allowComments && sibling.type === "comment") ||
             (allowImports &&
               sibling.type === "atrule" &&
-              importAtRules.includes(sibling.name))
+              importAtRules.has(sibling.name))
           )
         ) {
           precededOnlyByAllowed = false;

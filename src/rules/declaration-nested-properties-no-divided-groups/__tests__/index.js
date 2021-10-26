@@ -1,4 +1,4 @@
-import { ruleName, messages } from "../";
+import { ruleName, messages } from "..";
 
 testRule({
   ruleName,

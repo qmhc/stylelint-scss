@@ -21,11 +21,10 @@ export default function(statement, { noRawBefore } = {}) {
     result += statement.raws.before;
   }
 
-  if (statement.type === "rule") {
-    result += statement.selector;
-  } else {
-    result += `@${statement.name}${statement.raws.afterName}${statement.params}`;
-  }
+  result +=
+    statement.type === "rule"
+      ? statement.selector
+      : `@${statement.name}${statement.raws.afterName}${statement.params}`;
 
   const between = statement.raws.between;
 

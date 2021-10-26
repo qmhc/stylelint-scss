@@ -4,14 +4,15 @@ testRule({
   ruleName,
   config: [true],
   customSyntax: "postcss-scss",
-  accept: loopOverUnits({
-    code: `
+  accept: [
+    ...loopOverUnits({
+      code: `
     p {
       padding: 1 * 1%unit%;
     }
     `,
-    description: "Accepts proper value interpolation with %unit%"
-  }).concat([
+      description: "Accepts proper value interpolation with %unit%"
+    }),
     {
       code: "$pad: 2; $doublePad: px#{$pad}px;",
       description: "does not report when a unit is preceded by another string"
@@ -32,18 +33,19 @@ testRule({
       }`,
       description: "ignores interpolation without a unit"
     }
-  ]),
-  reject: loopOverUnits({
-    code: `
+  ],
+  reject: [
+    ...loopOverUnits({
+      code: `
       p {
         padding: #{$value}%unit%;
       }
       `,
-    message: messages.rejected("%unit%"),
-    line: 3,
-    column: 27,
-    description: "Rejects interpolation with %unit%"
-  }).concat([
+      message: messages.rejected("%unit%"),
+      line: 3,
+      column: 27,
+      description: "Rejects interpolation with %unit%"
+    }),
     {
       code: "$pad: 2; $padAndMore: #{$pad + 5}px;",
       description: "reports lint when expression used in interpolation",
@@ -95,7 +97,7 @@ testRule({
       column: 29,
       message: messages.rejected("vmin")
     }
-  ])
+  ]
 });
 
 function loopOverUnits(codeBlock) {

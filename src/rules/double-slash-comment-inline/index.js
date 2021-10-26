@@ -48,10 +48,10 @@ export default function(expectation, options) {
 
       const comments = findCommentsInRaws(rootString);
 
-      comments.forEach(comment => {
+      for (const comment of comments) {
         // Only process // comments
         if (comment.type !== "double-slash") {
-          return;
+          continue;
         }
 
         // Optionally ignore stylelint commands
@@ -59,7 +59,7 @@ export default function(expectation, options) {
           comment.text.indexOf(stylelintCommandPrefix) === 0 &&
           optionsHaveIgnored(options, "stylelint-commands")
         ) {
-          return;
+          continue;
         }
 
         const isInline = comment.inlineAfter || comment.inlineBefore;
@@ -70,7 +70,7 @@ export default function(expectation, options) {
         } else if (!isInline && expectation === "always") {
           message = messages.expected;
         } else {
-          return;
+          continue;
         }
 
         utils.report({
@@ -80,7 +80,7 @@ export default function(expectation, options) {
           result,
           ruleName
         });
-      });
+      }
     }
   };
 }

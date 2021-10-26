@@ -109,10 +109,8 @@ export function sassConditionalBraceNLAfterChecker({
         if (hasNewLinesBeforeNext) {
           complain(atrule, messages.rejected, reportIndex, " ");
         }
-      } else {
-        if (!hasNewLinesBeforeNext) {
-          complain(atrule, messages.expected, reportIndex, context.newline);
-        }
+      } else if (!hasNewLinesBeforeNext) {
+        complain(atrule, messages.expected, reportIndex, context.newline);
       }
     }
   });

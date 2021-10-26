@@ -48,21 +48,21 @@ export default function(expectation) {
         }
       });
 
-      Object.keys(nestedGroups).forEach(namespace => {
+      for (const namespace of Object.keys(nestedGroups)) {
         // Only warn if there are more than one nested groups with equal namespaces
         if (nestedGroups[namespace].length === 1) {
-          return;
+          continue;
         }
 
-        nestedGroups[namespace].forEach(group => {
+        for (const group of nestedGroups[namespace]) {
           utils.report({
             message: messages.expected(namespace),
             node: group,
             result,
             ruleName
           });
-        });
-      });
+        }
+      }
     });
   };
 }

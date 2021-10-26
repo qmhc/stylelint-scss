@@ -155,9 +155,9 @@ function errorMessage(name) {
     }
 
     return `Expected ${sass_package}.${rename} instead of ${name}`;
-  } else {
-    return `Expected ${sass_package}.${name} instead of ${name}`;
   }
+
+  return `Expected ${sass_package}.${name} instead of ${name}`;
 }
 
 export default function(value) {

@@ -10,7 +10,7 @@ export const messages = utils.ruleMessages(ruleName, {
 });
 
 export default function(whitelistOption) {
-  const whitelist = [].concat(whitelistOption);
+  const whitelist = [whitelistOption].flat();
 
   return (root, result) => {
     const validOptions = utils.validateOptions(result, ruleName, {
@@ -47,12 +47,11 @@ export default function(whitelistOption) {
       }
 
       if (
-        whitelist.some(ext => {
-          return (
+        whitelist.some(
+          ext =>
             (isString(ext) && extensionNormalized === ext) ||
             (isRegExp(ext) && extensionNormalized.search(ext) !== -1)
-          );
-        })
+        )
       ) {
         return;
       }
@@ -68,9 +67,9 @@ export default function(whitelistOption) {
 
     root.walkAtRules("import", atRule => {
       // Processing comma-separated lists of import paths
-      atRule.params.split(",").forEach(path => {
+      for (const path of atRule.params.split(",")) {
         checkPathForUnderscore(path, atRule);
-      });
+      }
     });
   };
 }

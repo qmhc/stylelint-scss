@@ -66,16 +66,18 @@ const createTransformer = options => {
         }
       }
     }
-    paths.forEach(directoryPath => (cache[directoryPath] = cache[directory]));
+
+    for (const directoryPath of paths) cache[directoryPath] = cache[directory];
 
     return cache[directory] || "";
   };
 
-  options = Object.assign({}, options, {
+  options = {
+    ...options,
     plugins: (options && options.plugins) || [],
-    presets: ((options && options.presets) || []).concat([jestPreset]),
+    presets: [...((options && options.presets) || []), jestPreset],
     retainLines: true
-  });
+  };
 
   delete options.cacheDirectory;
   delete options.filename;
@@ -109,12 +111,13 @@ const createTransformer = options => {
         return sourceText;
       }
 
-      const theseOptions = Object.assign({ filename: sourcePath }, options);
+      const theseOptions = { filename: sourcePath, ...options };
 
       if (typeof instrument !== "undefined" && instrument) {
         // theseOptions.auxiliaryCommentBefore = ' istanbul ignore next ';
         // Copied from jest-runtime transform.js
-        theseOptions.plugins = theseOptions.plugins.concat([
+        theseOptions.plugins = [
+          ...theseOptions.plugins,
           [
             require("babel-plugin-istanbul").default,
             {
@@ -123,7 +126,7 @@ const createTransformer = options => {
               exclude: []
             }
           ]
-        ]);
+        ];
       }
 
       return babel.transform(sourceText, theseOptions).code;

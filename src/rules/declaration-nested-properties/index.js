@@ -74,7 +74,9 @@ export default function(expectation, options) {
           if (type === "rule" || (type === "decl" && decl.isNested)) {
             // `background:red {` - selector;
             // `background: red {` - nested prop; space is decisive here
-            const testForProp = parseNestedPropRoot(selector || decl.toString());
+            const testForProp = parseNestedPropRoot(
+              selector || decl.toString()
+            );
 
             if (testForProp && testForProp.propName !== undefined) {
               const ns = testForProp.propName.value;
@@ -92,34 +94,33 @@ export default function(expectation, options) {
         });
 
         // Now check if the found properties deserve warnings
-        Object.keys(warningCandidates).forEach(namespace => {
+        for (const namespace of Object.keys(warningCandidates)) {
           const exceptIfOnlyOfNs = optionsHaveException(
             options,
             "only-of-namespace"
           );
           const moreThanOneProp = warningCandidates[namespace].length > 1;
 
-          warningCandidates[namespace].forEach(candidate => {
+          for (const candidate of warningCandidates[namespace]) {
             if (candidate.nested === true) {
-              if (exceptIfOnlyOfNs) {
+              if (
+                exceptIfOnlyOfNs &&
                 // If there is only one prop inside a nested prop - warn (reverse "always")
-                if (
-                  candidate.nested === true &&
-                  candidate.node.nodes.length === 1
-                ) {
-                  utils.report({
-                    message: messages.rejected(namespace),
-                    node: candidate.node,
-                    result,
-                    ruleName
-                  });
-                }
+                candidate.nested === true &&
+                candidate.node.nodes.length === 1
+              ) {
+                utils.report({
+                  message: messages.rejected(namespace),
+                  node: candidate.node,
+                  result,
+                  ruleName
+                });
               }
             } else {
               // Don't warn on non-nested namespaced props if there are
               // less than 2 of them, and except: "only-of-namespace" is set
               if (exceptIfOnlyOfNs && !moreThanOneProp) {
-                return;
+                continue;
               }
 
               utils.report({
@@ -129,8 +130,8 @@ export default function(expectation, options) {
                 ruleName
               });
             }
-          });
-        });
+          }
+        }
       });
     } else if (expectation === "never") {
       root.walk(item => {

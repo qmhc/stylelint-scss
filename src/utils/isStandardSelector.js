@@ -10,10 +10,12 @@ export default function(selector) {
   const standardSyntaxSelector = isStandardSyntaxSelector(selector);
 
   // SCSS placeholder selectors
-  if (!standardSyntaxSelector) {
-    if (selector.indexOf("%") === 0 && !hasInterpolation(selector)) {
-      return true;
-    }
+  if (
+    !standardSyntaxSelector &&
+    selector.indexOf("%") === 0 &&
+    !hasInterpolation(selector)
+  ) {
+    return true;
   }
 
   return standardSyntaxSelector;

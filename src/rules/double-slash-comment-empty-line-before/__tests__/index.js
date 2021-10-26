@@ -104,7 +104,8 @@ testRule({
   skipBasicChecks: true,
   fix: true,
 
-  accept: alwaysGeneralTests.accept.concat([
+  accept: [
+    ...alwaysGeneralTests.accept,
     {
       code: `a {
 
@@ -113,9 +114,10 @@ testRule({
     }`,
       description: "First-nested, empty line before."
     }
-  ]),
+  ],
 
-  reject: alwaysGeneralTests.reject.concat([
+  reject: [
+    ...alwaysGeneralTests.reject,
     {
       code: `a {
       // First-nested, no empty line before.
@@ -131,7 +133,7 @@ testRule({
       line: 2,
       column: 7
     }
-  ])
+  ]
 });
 
 testRule({
@@ -141,7 +143,8 @@ testRule({
   skipBasicChecks: true,
   fix: true,
 
-  accept: alwaysGeneralTests.accept.concat([
+  accept: [
+    ...alwaysGeneralTests.accept,
     {
       code: `
       a {
@@ -151,9 +154,10 @@ testRule({
     `,
       description: "First nested, no empty line."
     }
-  ]),
+  ],
 
-  reject: alwaysGeneralTests.reject.concat([
+  reject: [
+    ...alwaysGeneralTests.reject,
     {
       code: `
       a {
@@ -171,7 +175,7 @@ testRule({
       line: 4,
       column: 7
     }
-  ])
+  ]
 });
 
 testRule({
@@ -241,7 +245,8 @@ testRule({
   customSyntax: "postcss-scss",
   skipBasicChecks: true,
 
-  accept: alwaysGeneralTests.accept.concat([
+  accept: [
+    ...alwaysGeneralTests.accept,
     {
       code: `
       a {
@@ -253,7 +258,7 @@ testRule({
       description:
         "stylelint command line-comment, no empty line before (ignored)."
     }
-  ])
+  ]
 });
 
 testRule({

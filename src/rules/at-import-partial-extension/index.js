@@ -45,7 +45,7 @@ export default function(expectation) {
         .filter(path => !mediaQueryTypesRE.test(path.trim()));
 
       // Processing comma-separated lists of import paths
-      paths.forEach(path => {
+      for (const path of paths) {
         // Stripping trailing quotes and whitespaces, if any
         const pathStripped = stripPath(path);
 
@@ -55,7 +55,7 @@ export default function(expectation) {
           pathStripped.slice(-4) === ".css" ||
           pathStripped.search("//") !== -1
         ) {
-          return;
+          continue;
         }
 
         const extension = nodeJsPath.extname(pathStripped).slice(1);
@@ -68,7 +68,7 @@ export default function(expectation) {
             ruleName
           });
 
-          return;
+          continue;
         }
 
         if (extension && expectation === "never") {
@@ -80,7 +80,7 @@ export default function(expectation) {
             ruleName
           });
         }
-      });
+      }
     });
   };
 }

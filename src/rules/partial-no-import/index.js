@@ -68,9 +68,9 @@ export default function(on) {
     root.walkAtRules("import", mixinCall => {
       // Check if @import is treated as CSS import; report only if not
       // Processing comma-separated lists of import paths
-      mixinCall.params.split(/["']\s*,/).forEach(path => {
+      for (const path of mixinCall.params.split(/["']\s*,/)) {
         checkImportForCSS(path, mixinCall);
-      });
+      }
     });
   };
 }

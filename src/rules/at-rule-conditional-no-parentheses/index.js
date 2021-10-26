@@ -8,7 +8,7 @@ export const messages = utils.ruleMessages(ruleName, {
 });
 
 // postcss picks up else-if as else.
-const conditional_rules = ["if", "while", "else"];
+const conditional_rules = new Set(["if", "while", "else"]);
 
 function report(atrule, result) {
   utils.report({
@@ -40,7 +40,7 @@ export default function(primary, _unused, context) {
 
     root.walkAtRules(atrule => {
       // Check if this is a conditional rule.
-      if (!conditional_rules.includes(atrule.name)) {
+      if (!conditional_rules.has(atrule.name)) {
         return;
       }
 
@@ -48,20 +48,18 @@ export default function(primary, _unused, context) {
       // params are of format "`if (cond)` or `if cond`
       // instead of `(cond)` or `cond`"
       if (atrule.name === "else") {
-        if (atrule.params.match(/ ?if ?\(.*\) ?$/)) {
+        if (/ ?if ?\(.*\) ?$/.test(atrule.params)) {
           if (context.fix) {
             fix(atrule);
           } else {
             report(atrule, result);
           }
         }
-      } else {
-        if (atrule.params.trim().match(/^\(.*\)$/)) {
-          if (context.fix) {
-            fix(atrule);
-          } else {
-            report(atrule, result);
-          }
+      } else if (/^\(.*\)$/.test(atrule.params.trim())) {
+        if (context.fix) {
+          fix(atrule);
+        } else {
+          report(atrule, result);
         }
       }
     });

@@ -23,7 +23,7 @@ export default function findOperators({
   isAfterColon,
   callback
 }) {
-  const mathOperators = ["+", "/", "-", "*", "%"];
+  const mathOperators = new Set(["+", "/", "-", "*", "%"]);
   // A stack of modes activated for the current char: string, interpolation
   // Calculations inside strings are not processed, so spaces are not linted
   const modesEntered = [
@@ -85,7 +85,7 @@ export default function findOperators({
 
     // If it's a math operator
     if (
-      (mathOperators.includes(character) &&
+      (mathOperators.has(character) &&
         mathOperatorCharType(string, i, isAfterColon) === "op") ||
       // or is "<" or ">"
       substringStartingWithIndex.search(/^[<>]([^=]|$)/) !== -1
@@ -439,17 +439,16 @@ function checkMinus(string, index) {
     // console.log('no spaces')
     // `<something>-1`, `<something>-10px`
     if (
-      (isValueWithUnitAfter_.is && !isValueWithUnitAfter_.opsBetween) ||
-      (isNumberAfter_.is && !isNumberAfter_.opsBetween)
-    ) {
+      ((isValueWithUnitAfter_.is && !isValueWithUnitAfter_.opsBetween) ||
+        (isNumberAfter_.is && !isNumberAfter_.opsBetween)) &&
       // `10px-1`, `1-10px`, `1-1`, `1x-1x`
-      if (isValueWithUnitBefore_ || isNumberBefore_) {
-        // console.log("-, op: 1-10px")
-        return "op";
-      }
-
-      // The - could be a "sign" here, but for now "char" does the job
+      (isValueWithUnitBefore_ || isNumberBefore_)
+    ) {
+      // console.log("-, op: 1-10px")
+      return "op";
     }
+
+    // The - could be a "sign" here, but for now "char" does the job
 
     // `1-$var`
     if (isNumberBefore_ && after[0] === "$") {
@@ -726,7 +725,9 @@ function isStringBefore(before) {
   ) {
     result.is = true;
   } else if (
-    stringOpsClipped.search(/(?:^|[/(){},: ])([a-zA-Z_][\w-]*|-+[a-zA-Z_][\w-]*)$/) !== -1
+    stringOpsClipped.search(
+      /(?:^|[/(){},: ])([a-zA-Z_][\w-]*|-+[a-zA-Z_][\w-]*)$/
+    ) !== -1
   ) {
     // First pattern: a1, a1a, a-1,
     result.is = true;
@@ -742,7 +743,10 @@ function isStringAfter(after) {
   if (stringTrimmed[0] === '"' || stringTrimmed[0] === "'") return true;
 
   // e.g. `a1`, `a1a`, `a-1`, and even `--s323`
-  return stringTrimmed.search(/^([a-zA-Z_][\w-]*|-+[a-zA-Z_][\w-]*)(?:$|[)}, ])/) !== -1;
+  return (
+    stringTrimmed.search(/^([a-zA-Z_][\w-]*|-+[a-zA-Z_][\w-]*)(?:$|[)}, ])/) !==
+    -1
+  );
 }
 
 function isInterpolationAfter(after) {
@@ -929,7 +933,9 @@ function isHexColorAfter(after) {
 }
 
 function isHexColorBefore(before) {
-  return before.search(/(?:[/(){},+*%-\s]|^)#([\da-fA-F]{3}|[\da-fA-F]{6})$/) !== -1;
+  return (
+    before.search(/(?:[/(){},+*%-\s]|^)#([\da-fA-F]{3}|[\da-fA-F]{6})$/) !== -1
+  );
 }
 
 /**

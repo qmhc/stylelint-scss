@@ -88,7 +88,9 @@ export default function(value, secondaryOptions) {
       if (isDefault) {
         if (Number.isFinite(ignoreDefaults)) {
           return variableData.defaultCount >= ignoreDefaults;
-        } else if (ignoreDefaults) {
+        }
+
+        if (ignoreDefaults) {
           return false;
         }
       }

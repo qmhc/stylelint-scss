@@ -242,10 +242,10 @@ export function calculationOperatorSpaceChecker({ root, result, checker }) {
     }
 
     // All the strings have been parsed, now run whitespace checking
-    results.forEach(el => {
+    for (const el of results) {
       // Only if there are operators within a string
       if (el.operators && el.operators.length > 0) {
-        el.operators.forEach(operator => {
+        for (const operator of el.operators) {
           checker({
             string: el.source,
             globalIndex: operator.globalIndex,
@@ -254,27 +254,27 @@ export function calculationOperatorSpaceChecker({ root, result, checker }) {
             node: item,
             result
           });
-        });
+        }
       }
-    });
+    }
   });
 
   // Checking interpolation inside comments
   // We have to give up on PostCSS here because it skips some inline comments
-  findCommentsInRaws(root.source.input.css).forEach(comment => {
+  for (const comment of findCommentsInRaws(root.source.input.css)) {
     const startIndex =
       comment.source.start +
       comment.raws.startToken.length +
       comment.raws.left.length;
 
     if (comment.type !== "css") {
-      return;
+      continue;
     }
 
-    findInterpolation(comment.text).forEach(el => {
+    for (const el of findInterpolation(comment.text)) {
       // Only if there are operators within a string
       if (el.operators && el.operators.length > 0) {
-        el.operators.forEach(operator => {
+        for (const operator of el.operators) {
           checker({
             string: el.source,
             globalIndex: operator.globalIndex + startIndex,
@@ -283,8 +283,8 @@ export function calculationOperatorSpaceChecker({ root, result, checker }) {
             node: root,
             result
           });
-        });
+        }
       }
-    });
-  });
+    }
+  }
 }

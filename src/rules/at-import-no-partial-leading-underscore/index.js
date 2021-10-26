@@ -46,9 +46,9 @@ export default function(actual) {
 
     root.walkAtRules("import", decl => {
       // Processing comma-separated lists of import paths
-      decl.params.split(",").forEach(path => {
+      for (const path of decl.params.split(",")) {
         checkPathForUnderscore(path, decl);
-      });
+      }
     });
   };
 }

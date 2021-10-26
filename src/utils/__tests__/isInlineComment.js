@@ -1,4 +1,4 @@
-import { isInlineComment } from "../";
+import { isInlineComment } from "..";
 import postcss from "postcss";
 import scss from "postcss-scss";
 

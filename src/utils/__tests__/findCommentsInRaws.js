@@ -1,4 +1,4 @@
-import { findCommentsInRaws } from "../";
+import { findCommentsInRaws } from "..";
 import postcss from "postcss";
 import scss from "postcss-scss";
 

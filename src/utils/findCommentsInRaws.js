@@ -77,6 +77,7 @@ export default function findCommentsInRaws(rawString) {
 
         break;
       }
+
       // Entering url, other function or parens (only url matters)
       case "(": {
         if (mode === "comment" || mode === "string") {
@@ -104,6 +105,7 @@ export default function findCommentsInRaws(rawString) {
         });
         break;
       }
+
       // Exiting url, other function or parens
       case ")": {
         if (mode === "comment" || mode === "string") {
@@ -113,6 +115,7 @@ export default function findCommentsInRaws(rawString) {
         modesEntered.pop();
         break;
       }
+
       // checking for comment
       case "/": {
         // Break if the / is inside a comment because we leap over the second
@@ -161,6 +164,7 @@ export default function findCommentsInRaws(rawString) {
 
         break;
       }
+
       // Might be a closing `*/`
       case "*": {
         if (
@@ -186,7 +190,7 @@ export default function findCommentsInRaws(rawString) {
           comment.text = matches[3];
           comment.inlineBefore =
             rawString.substring(i + 2).search(/^\s*\S+\s*?\n/) !== -1;
-          result.push(Object.assign({}, comment));
+          result.push({ ...comment });
           comment = {};
           // Skip the next loop as the / in */ is already checked
           i++;
@@ -194,39 +198,39 @@ export default function findCommentsInRaws(rawString) {
 
         break;
       }
+
       default: {
         const isNewline =
           (character === "\r" && rawString[i + 1] === "\n") ||
           (character === "\n" && rawString[i - 1] !== "\r");
 
         // //-comments end before newline and if the code string ends
-        if (isNewline || i === rawString.length - 1) {
-          if (
-            mode === "comment" &&
-            modesEntered[lastModeIndex].character === "//"
-          ) {
-            comment.source.end = (isNewline ? i - 1 : i) + offset;
+        if (
+          (isNewline || i === rawString.length - 1) &&
+          mode === "comment" &&
+          modesEntered[lastModeIndex].character === "//"
+        ) {
+          comment.source.end = (isNewline ? i - 1 : i) + offset;
 
-            const commentRaw = rawString.substring(
-              commentStart,
-              isNewline ? i : i + 1
-            );
-            const matches = /^(\/+)(\s*)(.*?)(\s*)$/.exec(commentRaw);
+          const commentRaw = rawString.substring(
+            commentStart,
+            isNewline ? i : i + 1
+          );
+          const matches = /^(\/+)(\s*)(.*?)(\s*)$/.exec(commentRaw);
 
-            modesEntered.pop();
-            comment.raws = {
-              startToken: matches[1],
-              left: matches[2],
-              text: commentRaw,
-              right: matches[4]
-            };
-            comment.text = matches[3];
-            comment.inlineBefore = false;
-            result.push(Object.assign({}, comment));
-            comment = {};
-            // Compensate for the `*/` added by postcss-scss
-            offset += 2;
-          }
+          modesEntered.pop();
+          comment.raws = {
+            startToken: matches[1],
+            left: matches[2],
+            text: commentRaw,
+            right: matches[4]
+          };
+          comment.text = matches[3];
+          comment.inlineBefore = false;
+          result.push({ ...comment });
+          comment = {};
+          // Compensate for the `*/` added by postcss-scss
+          offset += 2;
         }
 
         break;

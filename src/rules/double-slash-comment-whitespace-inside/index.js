@@ -30,16 +30,16 @@ export default function(expectation) {
 
       const comments = findCommentsInRaws(rootString);
 
-      comments.forEach(comment => {
+      for (const comment of comments) {
         // Only process // comments
         if (comment.type !== "double-slash") {
-          return;
+          continue;
         }
 
         // if it's `//` - no warning whatsoever; if `// ` - then trailing
         // whitespace rule will govern this
         if (comment.text === "") {
-          return;
+          continue;
         }
 
         let message;
@@ -49,7 +49,7 @@ export default function(expectation) {
         } else if (comment.raws.left === "" && expectation === "always") {
           message = messages.expected;
         } else {
-          return;
+          continue;
         }
 
         utils.report({
@@ -59,7 +59,7 @@ export default function(expectation) {
           result,
           ruleName
         });
-      });
+      }
     }
   };
 }

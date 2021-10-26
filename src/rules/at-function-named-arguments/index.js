@@ -81,11 +81,11 @@ export default function(expectation, options) {
           return;
         }
 
-        args.forEach(arg => {
+        for (const arg of args) {
           switch (expectation) {
             case "never": {
               if (!arg.key) {
-                return;
+                continue;
               }
 
               utils.report({
@@ -99,7 +99,7 @@ export default function(expectation, options) {
 
             case "always": {
               if (arg.key && isScssVarRegExp.test(arg.key)) {
-                return;
+                continue;
               }
 
               utils.report({
@@ -111,7 +111,7 @@ export default function(expectation, options) {
               break;
             }
           }
-        });
+        }
       });
     });
   };

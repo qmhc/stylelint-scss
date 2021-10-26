@@ -1,4 +1,4 @@
-import { parseNestedPropRoot } from "../";
+import { parseNestedPropRoot } from "..";
 
 // --------------------------------------------------------------------------
 // nested props

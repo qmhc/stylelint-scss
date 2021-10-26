@@ -8,7 +8,7 @@ export const messages = utils.ruleMessages(ruleName, {
   rejected: "Expected the scale-color function to be used"
 });
 
-const function_names = [
+const function_names = new Set([
   "saturate",
   "desaturate",
   "darken",
@@ -17,10 +17,10 @@ const function_names = [
   "fade-in",
   "transparentize",
   "fade-out"
-];
+]);
 
 function isColorFunction(node) {
-  return node.type === "function" && function_names.includes(node.value);
+  return node.type === "function" && function_names.has(node.value);
 }
 
 function rule(primary) {
@@ -52,7 +52,7 @@ function rule(primary) {
             ? node.nodes.filter(isColorFunction)
             : [node];
 
-          nodes.forEach(node => {
+          for (const node of nodes) {
             utils.report({
               message: messages.rejected,
               node: decl,
@@ -60,7 +60,7 @@ function rule(primary) {
               result,
               ruleName
             });
-          });
+          }
         }
       });
     });

@@ -1,13 +1,12 @@
 import { utils } from "stylelint";
 import { eachRoot, namespace, isWhitespace } from "../../utils";
+import { calculationOperatorSpaceChecker } from "../operator-no-unspaced";
 
 export const ruleName = namespace("operator-no-newline-after");
 
 export const messages = utils.ruleMessages(ruleName, {
   rejected: operator => `Unexpected newline after "${operator}"`
 });
-
-import { calculationOperatorSpaceChecker } from "../operator-no-unspaced";
 
 /**
  * The checker function: whether there is a newline before THAT operator.

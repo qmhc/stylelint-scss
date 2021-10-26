@@ -10,7 +10,7 @@ export const messages = utils.ruleMessages(ruleName, {
 });
 
 export default function(blacklistOption) {
-  const blacklist = [].concat(blacklistOption);
+  const blacklist = [blacklistOption].flat();
 
   return (root, result) => {
     const validOptions = utils.validateOptions(result, ruleName, {
@@ -46,7 +46,7 @@ export default function(blacklistOption) {
         return;
       }
 
-      blacklist.forEach(ext => {
+      for (const ext of blacklist) {
         if (
           (isString(ext) && extensionNormalized === ext) ||
           (isRegExp(ext) && extensionNormalized.search(ext) !== -1)
@@ -59,14 +59,14 @@ export default function(blacklistOption) {
             ruleName
           });
         }
-      });
+      }
     }
 
     root.walkAtRules("import", atRule => {
       // Processing comma-separated lists of import paths
-      atRule.params.split(",").forEach(path => {
+      for (const path of atRule.params.split(",")) {
         checkPathForUnderscore(path, atRule);
-      });
+      }
     });
   };
 }
