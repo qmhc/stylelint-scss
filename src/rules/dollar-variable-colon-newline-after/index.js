@@ -1,4 +1,4 @@
-import { isBoolean } from "stylelint/lib/utils/validateTypes";
+import { isBoolean } from "../../utils/validateTypes";
 import { utils } from "stylelint";
 import {
   declarationValueIndex,

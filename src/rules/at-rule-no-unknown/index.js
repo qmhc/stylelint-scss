@@ -1,4 +1,4 @@
-import { isRegExp, isString } from "stylelint/lib/utils/validateTypes";
+import { isRegExp, isString } from "../../utils/validateTypes";
 import { rules, utils } from "stylelint";
 import { namespace } from "../../utils";
 

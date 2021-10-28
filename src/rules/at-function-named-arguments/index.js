@@ -1,4 +1,4 @@
-import { isString } from "stylelint/lib/utils/validateTypes";
+import { isString } from "../../utils/validateTypes";
 import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import {

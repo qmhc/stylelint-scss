@@ -1,6 +1,6 @@
 import { namespace } from "../../utils";
 import { utils } from "stylelint";
-import { isBoolean } from "stylelint/lib/utils/validateTypes";
+import { isBoolean } from "../../utils/validateTypes";
 
 export const ruleName = namespace("at-else-closing-brace-newline-after");
 

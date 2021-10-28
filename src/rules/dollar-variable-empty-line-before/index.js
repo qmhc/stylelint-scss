@@ -7,7 +7,7 @@ import {
   blockString
 } from "../../utils";
 import { utils } from "stylelint";
-import { isBoolean } from "stylelint/lib/utils/validateTypes";
+import { isBoolean } from "../../utils/validateTypes";
 
 export const ruleName = namespace("dollar-variable-empty-line-before");
 
